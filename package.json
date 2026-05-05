@@ -9,7 +9,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "check": "ultracite check",
     "fix": "ultracite fix",
-    "prepare": "lefthook install"
+    "prepare": "lefthook install",
+    "dev": "dotenvx run -- turbo dev"
   },
   "devDependencies": {
     "@dotenvx/dotenvx": "^1.64.0",
