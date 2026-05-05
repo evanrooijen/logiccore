@@ -1,3 +1,7 @@
 {
-  "$schema": "./node_modules/turbo/schema.json"
+  "$schema": "./node_modules/turbo/schema.json",
+  "tasks": {
+    "//#fix": {},
+    "//#check": {}
+  }
 }
