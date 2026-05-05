@@ -3,3 +3,5 @@ packages:
   - "apps/*"
 allowBuilds:
   lefthook: true
+  sharp: true
+  unrs-resolver: true
