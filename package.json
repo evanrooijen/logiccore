@@ -10,14 +10,16 @@
     "check": "ultracite check",
     "fix": "ultracite fix",
     "prepare": "lefthook install",
-    "dev": "dotenvx run -- turbo dev"
+    "dev": "dotenvx run -- turbo dev",
+    "generate": "dotenvx run -- turbo db:generate",
+    "migrate": "dotenvx run -- turbo db:migrate"
   },
   "devDependencies": {
     "@dotenvx/dotenvx": "^1.64.0",
     "lefthook": "^2.1.6",
     "oxfmt": "^0.48.0",
     "oxlint": "^1.63.0",
-    "turbo": "^2.9.9",
+    "turbo": "^2.9.10",
     "typescript": "catalog:",
     "ultracite": "7.6.3"
   },
