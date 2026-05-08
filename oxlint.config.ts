@@ -7,5 +7,6 @@ export default defineConfig({
   extends: [core, react, next],
   rules: {
     "sort-keys": "off",
+    "func-style": "off",
   },
 });

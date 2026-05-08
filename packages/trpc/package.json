@@ -1,0 +1,27 @@
+{
+  "name": "@logiccore/trpc",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "exports": {
+    ".": "./src/public.ts",
+    "./routers": "./src/routers/index.ts",
+    "./query-client": "./src/query-client.ts"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "catalog:",
+    "@trpc/server": "catalog:",
+    "superjson": "catalog:",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "typescript": "catalog:"
+  }
+}
