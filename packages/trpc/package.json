@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@logiccore/db": "workspace:*",
+    "@logiccore/world": "workspace:*",
     "@tanstack/react-query": "catalog:",
     "@trpc/server": "catalog:",
     "superjson": "catalog:",
