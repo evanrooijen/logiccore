@@ -20,7 +20,7 @@
     "@tanstack/react-query": "catalog:",
     "@trpc/server": "catalog:",
     "superjson": "catalog:",
-    "zod": "^4.4.3"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@types/node": "^22",
