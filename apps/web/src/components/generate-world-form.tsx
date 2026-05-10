@@ -18,7 +18,7 @@ export const GenerateWorldForm = () => {
         ) : null}
       </div>
       <pre className="max-h-48 overflow-auto text-xs">
-        {state?.data ? JSON.stringify(state.data, null, 2) : null}
+        {state?.worldId || null}
       </pre>
       <form className="flex flex-col gap-y-2 @md:max-w-sm" action={submit}>
         <Input type="number" name="seed" />
