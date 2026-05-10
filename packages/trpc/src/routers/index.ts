@@ -14,9 +14,17 @@ export const appRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const world = generateWorld(input.seed, 2048, 32);
 
+      const { chunkSize, chunksHigh, chunksWide } = world;
+
       const [row] = await ctx.db
         .insert(generatedWorldsTable)
-        .values({ payload: world })
+        .values({
+          chunksHigh,
+          chunkSize,
+          chunksWide,
+          seed: input.seed,
+          size: 2048,
+        })
         .returning({ id: generatedWorldsTable.id });
 
       if (!row) {
