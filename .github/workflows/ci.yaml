@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Cache turbo build setup
+      - name: Cache turbo output
         uses: actions/cache@v5
         with:
           path: .turbo
@@ -29,12 +29,14 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
+        with:
+          cache: true
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Run linter
-        run: pnpm turbo lint
+        run: pnpm turbo check
 
       - name: Run tests
         run: pnpm turbo test
