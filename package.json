@@ -11,6 +11,7 @@
     "fix": "ultracite fix",
     "prepare": "lefthook install",
     "dev": "dotenvx run -- turbo dev",
+    "build": "dotenvx run -- turbo build",
     "generate": "dotenvx run -- turbo db:generate",
     "migrate": "dotenvx run -- turbo db:migrate"
   },
