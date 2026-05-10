@@ -4,7 +4,9 @@
   "tasks": {
     "//#fix": {},
     "//#check": {},
-    "build": {},
+    "build": {
+      "outputs": [".next/*"]
+    },
     "dev": {
       "persistent": true,
       "cache": false
