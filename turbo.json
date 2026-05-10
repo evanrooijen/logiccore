@@ -1,5 +1,6 @@
 {
   "$schema": "./node_modules/turbo/schema.json",
+  "ui": "tui",
   "tasks": {
     "//#fix": {},
     "//#check": {},
@@ -8,8 +9,6 @@
       "persistent": true,
       "cache": false
     },
-    "test": {
-      "cache": false
-    }
+    "test": {}
   }
 }

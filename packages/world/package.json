@@ -8,7 +8,7 @@
   "type": "module",
   "exports": "./src/index.ts",
   "scripts": {
-    "test": "vitest"
+    "test": "vitest --run"
   },
   "dependencies": {
     "simplex-noise": "^4.0.3"
