@@ -12,6 +12,11 @@ export const GenerateWorldForm = () => {
 
   return (
     <div className="flex flex-col gap-4 @container">
+      <div className="text-muted-foreground text-xs">
+        {typeof state?.worldId === "number" ? (
+          <p className="font-medium">Saved as world #{state.worldId}</p>
+        ) : null}
+      </div>
       <pre className="max-h-48 overflow-auto text-xs">
         {state?.data ? JSON.stringify(state.data, null, 2) : null}
       </pre>

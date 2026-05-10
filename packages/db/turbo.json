@@ -7,6 +7,9 @@
     },
     "db:generate": {
       "env": ["DB_FILE_NAME"]
+    },
+    "db:studio": {
+      "env": ["DB_FILE_NAME"]
     }
   }
 }

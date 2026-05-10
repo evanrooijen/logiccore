@@ -1,3 +1,4 @@
+import { generatedWorldsTable } from "@logiccore/db/schema";
 import { generateWorld } from "@logiccore/world";
 import { z } from "zod";
 
@@ -10,12 +11,21 @@ export const appRouter = createTRPCRouter({
         seed: z.number().nonnegative(),
       })
     )
-    .mutation(({ input }) => {
-      /* empty */
+    .mutation(async ({ ctx, input }) => {
       const world = generateWorld(input.seed, 2048, 32);
+
+      const [row] = await ctx.db
+        .insert(generatedWorldsTable)
+        .values({ payload: world })
+        .returning({ id: generatedWorldsTable.id });
+
+      if (!row) {
+        throw new Error("Failed to persist generated world");
+      }
+
       return {
         status: "success",
-        data: world,
+        worldId: row.id,
       };
     }),
 });

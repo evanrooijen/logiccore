@@ -12,8 +12,6 @@ export const generateWorldAction = async (
 
   const parsed = z.coerce.number().nonnegative().safeParse(value);
 
-  console.dir(parsed);
-
   const seed = parsed.success ? parsed.data : 633_465;
 
   const result = await caller.generate({ seed });

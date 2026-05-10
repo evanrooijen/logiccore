@@ -1,10 +1,8 @@
 import "server-only";
+import { createTRPCRouterContext } from "@logiccore/trpc/context";
 import { makeQueryClient } from "@logiccore/trpc/query-client";
 import { appRouter } from "@logiccore/trpc/routers";
-import {
-  createTRPCContext,
-  createTRPCOptionsProxy,
-} from "@trpc/tanstack-react-query";
+import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { cache } from "react";
 
 // IMPORTANT: Create a stable getter for the query client that
@@ -12,7 +10,7 @@ import { cache } from "react";
 export const getQueryClient = cache(makeQueryClient);
 
 export const trpc = createTRPCOptionsProxy({
-  ctx: () => createTRPCContext(),
+  ctx: () => createTRPCRouterContext(),
   router: appRouter,
   queryClient: getQueryClient,
 });
@@ -23,4 +21,4 @@ export const trpc = createTRPCOptionsProxy({
 //   queryClient: getQueryClient,
 // });
 
-export const caller = appRouter.createCaller({});
+export const caller = appRouter.createCaller(createTRPCRouterContext());

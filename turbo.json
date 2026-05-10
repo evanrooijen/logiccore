@@ -4,10 +4,15 @@
   "tasks": {
     "//#fix": {},
     "//#check": {},
+    "db:studio": {
+      "persistent": true,
+      "cache": false
+    },
     "build": {
       "outputs": [".next/*"]
     },
     "dev": {
+      "env": ["DB_FILE_NAME"],
       "persistent": true,
       "cache": false
     },

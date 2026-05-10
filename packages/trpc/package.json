@@ -8,6 +8,7 @@
   "type": "module",
   "exports": {
     ".": "./src/public.ts",
+    "./context": "./src/context.ts",
     "./routers": "./src/routers/index.ts",
     "./query-client": "./src/query-client.ts"
   },
