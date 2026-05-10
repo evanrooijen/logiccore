@@ -1,23 +1,24 @@
+// oxlint-disable unicorn/no-array-for-each
 import { describe, it, expect } from "vitest";
+
 import { generateWorld } from "./index";
-import type { WorldData, Biome, RockType } from "./types";
 
 describe("generateWorld", () => {
   describe("validation", () => {
     it("should throw an error if size is not divisible by chunkSize", () => {
-      expect(() => generateWorld(12345, 100, 30)).toThrow(
+      expect(() => generateWorld(12_345, 100, 30)).toThrow(
         "World size must divide evenly by chunk size"
       );
     });
 
     it("should not throw when size divides evenly by chunkSize", () => {
-      expect(() => generateWorld(12345, 100, 25)).not.toThrow();
+      expect(() => generateWorld(12_345, 100, 25)).not.toThrow();
     });
   });
 
   describe("world generation", () => {
     it("should generate a valid WorldData object", () => {
-      const world = generateWorld(12345, 100, 25);
+      const world = generateWorld(12_345, 100, 25);
 
       expect(world).toHaveProperty("seed");
       expect(world).toHaveProperty("size");
@@ -36,7 +37,7 @@ describe("generateWorld", () => {
     });
 
     it("should preserve seed and size parameters", () => {
-      const seed = 99999;
+      const seed = 99_999;
       const size = 256;
       const chunkSize = 32;
 
@@ -48,7 +49,7 @@ describe("generateWorld", () => {
     });
 
     it("should generate consistent results with same seed", () => {
-      const seed = 54321;
+      const seed = 54_321;
       const size = 100;
       const chunkSize = 25;
 
@@ -67,9 +68,9 @@ describe("generateWorld", () => {
 
       const hasDifference = world1.chunks.some(
         (chunk, index) =>
-          chunk.biome !== world2.chunks[index].biome ||
-          chunk.geology !== world2.chunks[index].geology ||
-          chunk.richness !== world2.chunks[index].richness
+          chunk.biome !== world2.chunks[index]?.biome ||
+          chunk.geology !== world2.chunks[index]?.geology ||
+          chunk.richness !== world2.chunks[index]?.richness
       );
 
       expect(hasDifference).toBe(true);
@@ -78,19 +79,19 @@ describe("generateWorld", () => {
 
   describe("chunk data", () => {
     it("should assign correct chunk coordinates", () => {
-      const world = generateWorld(12345, 100, 25);
+      const world = generateWorld(12_345, 100, 25);
 
-      world.chunks.forEach((chunk) => {
+      for (const chunk of world.chunks) {
         expect(chunk.chunkX).toBeGreaterThanOrEqual(0);
         expect(chunk.chunkX).toBeLessThan(world.chunksWide);
         expect(chunk.chunkY).toBeGreaterThanOrEqual(0);
         expect(chunk.chunkY).toBeLessThan(world.chunksHigh);
-      });
+      }
     });
 
     it("should have all required chunk properties", () => {
-      const world = generateWorld(12345, 100, 25);
-      const chunk = world.chunks[0];
+      const world = generateWorld(12_345, 100, 25);
+      const [chunk] = world.chunks;
 
       expect(chunk).toHaveProperty("chunkX");
       expect(chunk).toHaveProperty("chunkY");
@@ -102,7 +103,7 @@ describe("generateWorld", () => {
     });
 
     it("should keep richness within valid bounds [0, 1]", () => {
-      const world = generateWorld(12345, 100, 25);
+      const world = generateWorld(12_345, 100, 25);
 
       world.chunks.forEach((chunk) => {
         expect(chunk.richness).toBeGreaterThanOrEqual(0);
@@ -111,7 +112,7 @@ describe("generateWorld", () => {
     });
 
     it("should have valid ore modifiers", () => {
-      const world = generateWorld(12345, 100, 25);
+      const world = generateWorld(12_345, 100, 25);
       const validOreTypes = ["gold", "silver", "copper", "iron", "coal"];
 
       world.chunks.forEach((chunk) => {
@@ -125,7 +126,7 @@ describe("generateWorld", () => {
     });
 
     it("should generate region names for all chunks", () => {
-      const world = generateWorld(12345, 100, 25);
+      const world = generateWorld(12_345, 100, 25);
 
       world.chunks.forEach((chunk) => {
         expect(chunk.regionName).toBeDefined();
@@ -137,7 +138,7 @@ describe("generateWorld", () => {
 
   describe("geology specialization", () => {
     it("should boost gold in granite", () => {
-      const world = generateWorld(12345, 100, 25);
+      const world = generateWorld(12_345, 100, 25);
 
       const graniteChunks = world.chunks.filter(
         (chunk) => chunk.geology === "granite"
@@ -159,7 +160,7 @@ describe("generateWorld", () => {
     });
 
     it("should boost copper and iron in basalt", () => {
-      const world = generateWorld(12345, 100, 25);
+      const world = generateWorld(12_345, 100, 25);
 
       const basaltChunks = world.chunks.filter(
         (chunk) => chunk.geology === "basalt"
@@ -174,7 +175,7 @@ describe("generateWorld", () => {
 
   describe("biome specialization", () => {
     it("should boost gold in mountains", () => {
-      const world = generateWorld(12345, 100, 25);
+      const world = generateWorld(12_345, 100, 25);
 
       const mountainChunks = world.chunks.filter(
         (chunk) => chunk.biome === "mountains"
@@ -186,15 +187,15 @@ describe("generateWorld", () => {
     });
 
     it("should boost copper in volcanic biome", () => {
-      const world = generateWorld(12345, 100, 25);
+      const world = generateWorld(12_345, 100, 25);
 
       const volcanicChunks = world.chunks.filter(
         (chunk) => chunk.biome === "volcanic"
       );
 
-      volcanicChunks.forEach((chunk) => {
+      for (const chunk of volcanicChunks) {
         expect(chunk.oreModifiers.copper).toBeGreaterThan(1);
-      });
+      }
     });
   });
 });
