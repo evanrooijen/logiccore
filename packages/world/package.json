@@ -8,13 +8,14 @@
   "type": "module",
   "exports": "./src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest"
   },
   "dependencies": {
     "simplex-noise": "^4.0.3"
   },
   "devDependencies": {
     "@types/node": "^22",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "^1.0.0"
   }
 }
