@@ -6,6 +6,9 @@
     "dev": {
       "persistent": true,
       "cache": false
+    },
+    "test": {
+      "cache": false
     }
   }
 }
