@@ -3,6 +3,7 @@
   "tasks": {
     "//#fix": {},
     "//#check": {},
+    "build": {},
     "dev": {
       "persistent": true,
       "cache": false
