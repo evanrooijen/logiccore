@@ -9,7 +9,7 @@
       "cache": false
     },
     "build": {
-      "dependsOn": ["db#db:migrate"],
+      "dependsOn": ["@logiccore/db#db:migrate"],
       "env": ["DB_FILE_NAME"],
       "outputs": [".next/*"]
     },
