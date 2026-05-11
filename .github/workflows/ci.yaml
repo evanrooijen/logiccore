@@ -41,3 +41,5 @@ jobs:
 
       - name: Build
         run: pnpm turbo build
+        env:
+          DB_FILE_NAME: ${{ vars.DB_FILE_NAME }}
