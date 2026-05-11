@@ -9,6 +9,7 @@
       "cache": false
     },
     "build": {
+      "env": ["DB_FILE_NAME"],
       "outputs": [".next/*"]
     },
     "dev": {
