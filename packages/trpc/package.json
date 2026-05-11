@@ -20,6 +20,7 @@
     "@logiccore/world": "workspace:*",
     "@tanstack/react-query": "catalog:",
     "@trpc/server": "catalog:",
+    "drizzle-orm": "catalog:",
     "superjson": "catalog:",
     "zod": "catalog:"
   },

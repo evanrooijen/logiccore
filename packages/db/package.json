@@ -19,11 +19,11 @@
     "@libsql/client": "^0.17.3",
     "@logiccore/world": "workspace:*",
     "dotenv": "^17.4.2",
-    "drizzle-orm": "1.0.0-rc.2"
+    "drizzle-orm": "catalog:"
   },
   "devDependencies": {
     "@types/node": "^22",
-    "drizzle-kit": "1.0.0-rc.2",
+    "drizzle-kit": "catalog:",
     "tsx": "^4.21.0",
     "typescript": "catalog:"
   }

@@ -1,14 +1,9 @@
 import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
-import type { LibSQLDatabase } from "drizzle-orm/libsql";
 
-import * as schema from "./schema/index";
+import { relations } from "./schema/worlds";
 
-export type AppDatabase = LibSQLDatabase<typeof schema>;
-
-const globalForDb = globalThis as typeof globalThis & {
-  logiccoreDb?: AppDatabase;
-};
+export type AppDatabase = ReturnType<typeof getDb>;
 
 function getDatabaseUrl(): string {
   const url = process.env.DB_FILE_NAME;
@@ -22,14 +17,9 @@ function getDatabaseUrl(): string {
   return url;
 }
 
-/** LibSQL Drizzle database (singleton on `globalThis` in dev). */
-export function getDb(): AppDatabase {
-  if (!globalForDb.logiccoreDb) {
-    globalForDb.logiccoreDb = drizzle({
-      client: createClient({ url: getDatabaseUrl() }),
-      schema,
-    });
-  }
-
-  return globalForDb.logiccoreDb;
+export function getDb() {
+  return drizzle({
+    client: createClient({ url: getDatabaseUrl() }),
+    relations,
+  });
 }

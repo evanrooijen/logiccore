@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath, revalidateTag } from "next/cache";
 import { z } from "zod";
 
 import { caller } from "./../utils/trpc/server";
@@ -14,6 +15,20 @@ export const generateWorldAction = async (
 
   const seed = parsed.success ? parsed.data : 633_465;
 
-  const result = await caller.generate({ seed });
+  const result = await caller.world.generate({ seed });
+  revalidateTag("worlds", "max");
+  revalidatePath("/worlds");
   return result;
+};
+
+export const deleteWorldAction = async (formData: FormData) => {
+  const value = formData.get("worldId");
+
+  const parsed = z.coerce.number().nonnegative().parse(value);
+
+  console.dir({ parsed });
+
+  await caller.world.deleteWorld({ worldId: parsed });
+  revalidateTag("worlds", "max");
+  revalidatePath("/worlds");
 };

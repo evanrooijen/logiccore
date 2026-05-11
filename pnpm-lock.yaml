@@ -18,6 +18,12 @@ catalogs:
     '@trpc/tanstack-react-query':
       specifier: ^11
       version: 11.17.0
+    drizzle-kit:
+      specifier: 1.0.0-rc.2
+      version: 1.0.0-rc.2
+    drizzle-orm:
+      specifier: 1.0.0-rc.2
+      version: 1.0.0-rc.2
     superjson:
       specifier: ^2.2.6
       version: 2.2.6
@@ -148,14 +154,14 @@ importers:
         specifier: ^17.4.2
         version: 17.4.2
       drizzle-orm:
-        specifier: 1.0.0-rc.2
+        specifier: 'catalog:'
         version: 1.0.0-rc.2(@libsql/client@0.17.3)(zod@4.4.3)
     devDependencies:
       '@types/node':
         specifier: ^22
         version: 22.19.17
       drizzle-kit:
-        specifier: 1.0.0-rc.2
+        specifier: 'catalog:'
         version: 1.0.0-rc.2
       tsx:
         specifier: ^4.21.0
@@ -178,6 +184,9 @@ importers:
       '@trpc/server':
         specifier: 'catalog:'
         version: 11.17.0(typescript@6.0.3)
+      drizzle-orm:
+        specifier: 'catalog:'
+        version: 1.0.0-rc.2(@libsql/client@0.17.3)(zod@4.4.3)
       superjson:
         specifier: 'catalog:'
         version: 2.2.6
