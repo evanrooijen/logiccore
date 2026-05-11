@@ -9,7 +9,7 @@
       "cache": false
     },
     "build": {
-      "dependsOn": ["^db:migrate"],
+      "dependsOn": ["db#db:migrate"],
       "env": ["DB_FILE_NAME"],
       "outputs": [".next/*"]
     },
