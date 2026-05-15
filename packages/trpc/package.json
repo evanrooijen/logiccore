@@ -16,11 +16,11 @@
     "test": "echo \"Error: no test specified\" && exit 0"
   },
   "dependencies": {
-    "@logiccore/db": "workspace:*",
-    "@logiccore/world": "workspace:*",
+    "@logiccore/spacetimedb": "workspace:*",
     "@tanstack/react-query": "catalog:",
     "@trpc/server": "catalog:",
     "drizzle-orm": "catalog:",
+    "spacetimedb": "catalog:",
     "superjson": "catalog:",
     "zod": "catalog:"
   },

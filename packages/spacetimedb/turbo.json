@@ -1,0 +1,8 @@
+{
+  "extends": ["//"],
+  "tasks": {
+    "db:generate": {
+      "env": ["DB_FILE_NAME"]
+    }
+  }
+}

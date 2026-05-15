@@ -13,13 +13,11 @@ export const GenerateWorldForm = () => {
   return (
     <div className="flex flex-col gap-4 @container">
       <div className="text-muted-foreground text-xs">
-        {typeof state?.worldId === "number" ? (
-          <p className="font-medium">Saved as world #{state.worldId}</p>
+        {typeof state?.id === "number" ? (
+          <p className="font-medium">Saved as world #{state.id}</p>
         ) : null}
       </div>
-      <pre className="max-h-48 overflow-auto text-xs">
-        {state?.worldId || null}
-      </pre>
+      <pre className="max-h-48 overflow-auto text-xs">{state?.id || null}</pre>
       <form className="flex flex-col gap-y-2 @md:max-w-sm" action={submit}>
         <Input type="number" name="seed" />
         <Button disabled={isPending} type="submit">

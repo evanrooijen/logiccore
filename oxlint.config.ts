@@ -5,6 +5,7 @@ import react from "ultracite/oxlint/react";
 
 export default defineConfig({
   extends: [core, react, next],
+  ignorePatterns: ["**/module_bindings/**"],
   rules: {
     "sort-keys": "off",
     "func-style": "off",

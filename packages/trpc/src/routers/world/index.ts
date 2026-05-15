@@ -1,63 +1,50 @@
-import { generatedWorldsTable } from "@logiccore/db/schema";
-import { generateWorld } from "@logiccore/world";
-import { eq } from "drizzle-orm";
+import { tables } from "@logiccore/spacetimedb";
 import { z } from "zod";
 
 import { createTRPCRouter, baseProcedure } from "../../public";
+import { spacetimeDbQuery } from "../../utils";
 
 export const router = createTRPCRouter({
-  generate: baseProcedure
-    .input(
-      z.object({
-        seed: z.number().nonnegative(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const world = generateWorld(input.seed, 2048, 32);
-
-      const { chunkSize, chunksHigh, chunksWide } = world;
-
-      const [row] = await ctx.db
-        .insert(generatedWorldsTable)
-        .values({
-          chunksHigh,
-          chunkSize,
-          chunksWide,
-          seed: input.seed,
-          size: 2048,
-        })
-        .returning({ id: generatedWorldsTable.id });
-
-      if (!row) {
-        throw new Error("Failed to persist generated world");
-      }
-
-      return {
-        success: true,
-        worldId: row.id,
-      } as const;
-    }),
   list: baseProcedure.query(async ({ ctx }) => {
-    const worlds = await ctx.db.query.generatedWorldsTable.findMany();
+    const data = await spacetimeDbQuery(
+      ctx.db,
+      (conn) => [...conn.db.world.iter()],
+      tables.world
+    );
 
     return {
       success: true,
-      data: worlds,
+      data,
     } as const;
   }),
-  deleteWorld: baseProcedure
+  add: baseProcedure
     .input(
       z.object({
-        worldId: z.number().nonnegative(),
+        name: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      console.dir(input);
-
-      await ctx.db
-        .delete(generatedWorldsTable)
-        .where(eq(generatedWorldsTable.id, input.worldId));
-
+      await spacetimeDbQuery(
+        ctx.db,
+        (conn) => conn.reducers.add({ name: input.name }),
+        tables.world
+      );
+      return {
+        success: true,
+      } as const;
+    }),
+  delete: baseProcedure
+    .input(
+      z.object({
+        worldId: z.bigint().positive(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      await spacetimeDbQuery(
+        ctx.db,
+        (conn) => conn.reducers.deleteWorld({ worldId: input.worldId }),
+        tables.world
+      );
       return {
         success: true,
       } as const;

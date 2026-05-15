@@ -4,17 +4,13 @@
   "tasks": {
     "//#fix": {},
     "//#check": {},
-    "db:studio": {
-      "persistent": true,
-      "cache": false
-    },
     "build": {
-      "dependsOn": ["@logiccore/db#db:migrate"],
-      "env": ["DB_FILE_NAME"],
+      "dependsOn": ["^build"],
+      "env": ["DB_FILE_NAME", "SPACETIMEDB_HOST", "SPACETIMEDB_DB_NAME"],
       "outputs": [".next/*"]
     },
     "dev": {
-      "env": ["DB_FILE_NAME"],
+      "env": ["DB_FILE_NAME", "SPACETIMEDB_HOST", "SPACETIMEDB_DB_NAME"],
       "persistent": true,
       "cache": false
     },

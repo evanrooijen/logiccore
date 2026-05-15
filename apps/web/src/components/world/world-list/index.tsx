@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -9,9 +10,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { deleteWorldAction } from "@/lib/world";
-
 interface Props {
-  data: { id: number }[];
+  data: { id: bigint }[];
 }
 
 const WorldList = (props: Props) => (
@@ -20,15 +20,18 @@ const WorldList = (props: Props) => (
       <li key={id} className="">
         <Card className="relative pt-0 group min-h-full">
           <div className="absolute inset-0 z-30 aspect-video bg-black/35" />
-          <img
-            src="https://avatar.vercel.sh/shadcn1"
+          <Image
+            src="/shadcn1.png"
+            width={120}
+            height={120}
+            loading="eager"
             alt="Event cover"
             className="relative z-20 aspect-video w-full object-cover brightness-60 grayscale dark:brightness-40 group-hover:grayscale-0 group-hover:brightness-100"
           />
           <CardHeader>
             <CardAction>
               <form action={deleteWorldAction}>
-                <input type="hidden" name="worldId" value={id} />
+                <input type="hidden" name="worldId" value={id.toString()} />
                 <Button variant="destructive" type="submit">
                   Delete
                 </Button>
