@@ -1,10 +1,15 @@
+import { generateWorld } from "@logiccore/world";
 import { schema, table, t } from "spacetimedb/server";
 
 const world = table(
   { public: true },
   {
     id: t.u64().primaryKey().autoInc(),
-    name: t.string(),
+    seed: t.number(),
+    size: t.number(),
+    chunkSize: t.number(),
+    chunksWide: t.number(),
+    chunksHigh: t.number(),
   }
 );
 
@@ -15,9 +20,10 @@ const spacetimedb = schema({
 export default spacetimedb;
 
 export const add = spacetimedb.reducer(
-  { name: t.string() },
-  (ctx, { name }) => {
-    ctx.db.world.insert({ name, id: 0n });
+  { seed: t.number() },
+  (ctx, { seed }) => {
+    const { chunks: _, ...rest } = generateWorld(seed, 2048, 32);
+    ctx.db.world.insert({ ...rest, id: 0n });
   }
 );
 

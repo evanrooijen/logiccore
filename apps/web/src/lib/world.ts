@@ -8,7 +8,7 @@ export function useWorldMutations() {
   const deleteWorld = useReducer(reducers.deleteWorld);
 
   return {
-    addWorld: (name: string) => addWorld({ name }),
+    addWorld: (seed: number) => addWorld({ seed }),
     deleteWorld: (worldId: bigint) => deleteWorld({ worldId }),
   };
 }

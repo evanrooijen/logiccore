@@ -48,7 +48,7 @@ export const GenerateWorldForm = () => {
       setSubmitError(null);
 
       try {
-        await addWorld(`World ${value.seed}`);
+        await addWorld(value.seed);
         form.reset();
       } catch (error) {
         setSubmitError(
