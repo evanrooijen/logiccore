@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, JetBrains_Mono } from "next/font/google";
 
-import { cn } from "@/lib/utils";
-
 import "./globals.css";
+import { AppSpacetimeDBProvider } from "@/lib/spacetimedb/provider";
+import { cn } from "@/lib/utils";
 import { TRPCReactProvider } from "@/utils/trpc/client";
 
 const jetbrainsMono = JetBrains_Mono({
@@ -45,7 +45,9 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-full flex flex-col">
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <AppSpacetimeDBProvider>
+          <TRPCReactProvider>{children}</TRPCReactProvider>
+        </AppSpacetimeDBProvider>
       </body>
     </html>
   );

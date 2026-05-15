@@ -1,34 +1,14 @@
-"use server";
+"use client";
 
-import { revalidatePath, revalidateTag } from "next/cache";
-import { z } from "zod";
+import { reducers } from "@logiccore/spacetimedb";
+import { useReducer } from "spacetimedb/react";
 
-import { caller } from "./../utils/trpc/server";
+export function useWorldMutations() {
+  const addWorld = useReducer(reducers.add);
+  const deleteWorld = useReducer(reducers.deleteWorld);
 
-export const generateWorldAction = async (
-  _previousState: unknown,
-  formData: FormData
-) => {
-  const value = formData.get("seed");
-
-  const parsed = z.coerce.number().nonnegative().safeParse(value);
-
-  const seed = parsed.success ? parsed.data : 633_465;
-
-  const result = await caller.world.add({ name: `World ${seed}` });
-  revalidateTag("worlds", "max");
-  revalidatePath("/worlds");
-  return result;
-};
-
-export const deleteWorldAction = async (formData: FormData) => {
-  const value = formData.get("worldId");
-
-  const parsed = z.coerce.bigint().positive().parse(value);
-
-  console.dir({ parsed });
-
-  await caller.world.delete({ worldId: parsed });
-  revalidateTag("worlds", "max");
-  revalidatePath("/worlds");
-};
+  return {
+    addWorld: (name: string) => addWorld({ name }),
+    deleteWorld: (worldId: bigint) => deleteWorld({ worldId }),
+  };
+}

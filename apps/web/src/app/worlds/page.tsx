@@ -9,5 +9,5 @@ const getWorlds = async () => {
 
 export default async function Home() {
   const data = await getWorlds();
-  return <WorldList data={data.data} />;
+  return <WorldList initialData={data.data} />;
 }

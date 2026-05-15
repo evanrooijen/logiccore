@@ -10,7 +10,13 @@
       "outputs": [".next/*"]
     },
     "dev": {
-      "env": ["DB_FILE_NAME", "SPACETIMEDB_HOST", "SPACETIMEDB_DB_NAME"],
+      "env": [
+        "DB_FILE_NAME",
+        "SPACETIMEDB_HOST",
+        "SPACETIMEDB_DB_NAME",
+        "NEXT_PUBLIC_SPACETIMEDB_HOST",
+        "NEXT_PUBLIC_SPACETIMEDB_DB_NAME"
+      ],
       "persistent": true,
       "cache": false
     },
