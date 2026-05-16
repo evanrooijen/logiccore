@@ -20,7 +20,7 @@ export const router = createTRPCRouter({
   add: baseProcedure
     .input(
       z.object({
-        seed: z.number(),
+        seed: z.number().nonnegative(),
       })
     )
     .mutation(async ({ ctx, input }) => {
