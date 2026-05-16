@@ -20,13 +20,13 @@ export const router = createTRPCRouter({
   add: baseProcedure
     .input(
       z.object({
-        name: z.string(),
+        seed: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       await spacetimeDbQuery(
         ctx.db,
-        (conn) => conn.reducers.add({ name: input.name }),
+        (conn) => conn.reducers.add({ seed: input.seed }),
         tables.world
       );
       return {
