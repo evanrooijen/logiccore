@@ -1,5 +1,7 @@
 # LogicCore
 
+[![CI](https://github.com/evanrooijen/logiccore/actions/workflows/ci.yaml/badge.svg)](https://github.com/evanrooijen/logiccore/actions/workflows/ci.yaml)
+
 LogicCore is a pnpm workspace for experimenting with generated worlds backed by
 SpacetimeDB. The repository contains a Next.js application, typed SpacetimeDB
 bindings, a tRPC API layer, and deterministic world generation utilities.
