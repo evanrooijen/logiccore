@@ -1,17 +1,22 @@
 {
   "$schema": "./node_modules/turbo/schema.json",
   "ui": "tui",
+  "globalEnv": [
+    "DB_FILE_NAME",
+    "SPACETIMEDB_HOST",
+    "SPACETIMEDB_DB_NAME",
+    "NEXT_PUBLIC_SPACETIMEDB_HOST",
+    "NEXT_PUBLIC_SPACETIMEDB_DB_NAME"
+  ],
   "tasks": {
     "//#fix": {},
     "//#check": {},
     "build": {
       "dependsOn": ["^build"],
-      "env": ["DB_FILE_NAME", "SPACETIMEDB_HOST", "SPACETIMEDB_DB_NAME"],
       "outputs": [".next/*"]
     },
     "@logiccore/web#build": {
       "dependsOn": ["@logiccore/spacetimedb#db:generate", "^build"],
-      "env": ["DB_FILE_NAME", "SPACETIMEDB_HOST", "SPACETIMEDB_DB_NAME"],
       "outputs": [".next/*"]
     },
     "@logiccore/spacetimedb#build": {
@@ -19,13 +24,6 @@
       "outputs": []
     },
     "dev": {
-      "env": [
-        "DB_FILE_NAME",
-        "SPACETIMEDB_HOST",
-        "SPACETIMEDB_DB_NAME",
-        "NEXT_PUBLIC_SPACETIMEDB_HOST",
-        "NEXT_PUBLIC_SPACETIMEDB_DB_NAME"
-      ],
       "persistent": true,
       "cache": false
     },
