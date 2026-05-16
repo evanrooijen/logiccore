@@ -12,7 +12,7 @@
   "scripts": {
     "publish:local": "spacetime publish",
     "publish": "spacetime publish",
-    "db:generate": "spacetime generate"
+    "db:generate": "spacetime generate --module-path ."
   },
   "dependencies": {
     "@logiccore/world": "workspace:*",
