@@ -34,7 +34,7 @@ jobs:
           run_install: true
 
       - name: Install SpacetimeDB CLI
-        run: curl --proto '=https' --tlsv1.2 -sSf https://install.spacetimedb.com | sh
+        run: curl --proto '=https' --tlsv1.2 -sSf https://install.spacetimedb.com | bash
 
       - name: Run linter
         run: pnpm turbo check
