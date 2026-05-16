@@ -54,3 +54,7 @@ jobs:
         run: pnpm turbo build
         env:
           DB_FILE_NAME: ${{ vars.DB_FILE_NAME }}
+          SPACETIMEDB_HOST: ${{ vars.SPACETIMEDB_HOST }}
+          SPACETIMEDB_DB_NAME: ${{ vars.SPACETIMEDB_DB_NAME }}
+          NEXT_PUBLIC_SPACETIMEDB_HOST: ${{ vars.NEXT_PUBLIC_SPACETIMEDB_HOST }}
+          NEXT_PUBLIC_SPACETIMEDB_DB_NAME: ${{ vars.NEXT_PUBLIC_SPACETIMEDB_DB_NAME }}
