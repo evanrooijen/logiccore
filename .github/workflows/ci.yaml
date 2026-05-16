@@ -11,6 +11,13 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+    
+    services:
+      spacetimedb:
+        image: clockworklabs/spacetime
+        ports:
+          - 3000:3000
+
     steps:
       - uses: actions/checkout@v6
 
@@ -32,11 +39,6 @@ jobs:
         with:
           cache: true
           run_install: true
-
-      - name: Install SpacetimeDB CLI
-        run: |
-          curl -sSf https://install.spacetimedb.com | sh
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
 
       - name: Run linter
         run: pnpm turbo check
