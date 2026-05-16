@@ -12,5 +12,9 @@ import {
 
 export default __t.row({
   id: __t.u64().primaryKey(),
-  name: __t.string(),
+  seed: __t.f64(),
+  size: __t.f64(),
+  chunkSize: __t.f64().name("chunk_size"),
+  chunksWide: __t.f64().name("chunks_wide"),
+  chunksHigh: __t.f64().name("chunks_high"),
 });

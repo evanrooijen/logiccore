@@ -12,7 +12,11 @@ import {
 
 export const World = __t.object("World", {
   id: __t.u64(),
-  name: __t.string(),
+  seed: __t.f64(),
+  size: __t.f64(),
+  chunkSize: __t.f64(),
+  chunksWide: __t.f64(),
+  chunksHigh: __t.f64(),
 });
 export type World = __Infer<typeof World>;
 
