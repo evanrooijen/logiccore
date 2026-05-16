@@ -2,6 +2,7 @@
   "extends": ["//"],
   "tasks": {
     "db:generate": {
+      "cache": false,
       "env": ["DB_FILE_NAME"]
     }
   }
