@@ -11,5 +11,5 @@ import {
 } from "spacetimedb";
 
 export default {
-  name: __t.string(),
+  seed: __t.f64(),
 };
