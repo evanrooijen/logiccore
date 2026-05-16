@@ -9,6 +9,11 @@
       "env": ["DB_FILE_NAME", "SPACETIMEDB_HOST", "SPACETIMEDB_DB_NAME"],
       "outputs": [".next/*"]
     },
+    "@logiccore/web#build": {
+      "dependsOn": ["@logiccore/spacetimedb#db:generate", "^build"],
+      "env": ["DB_FILE_NAME", "SPACETIMEDB_HOST", "SPACETIMEDB_DB_NAME"],
+      "outputs": [".next/*"]
+    },
     "@logiccore/spacetimedb#build": {
       "cache": false,
       "outputs": []
