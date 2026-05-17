@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import ChunkGrid from "@/components/world/chunk-grid";
-import { caller } from "@/utils/trpc/server";
+import { getCaller } from "@/utils/trpc/server";
 
 export const dynamic = "force-dynamic";
 
@@ -26,23 +26,18 @@ export default async function WorldPage({ params }: PageProps) {
   const worldId = parseWorldId(slug);
 
   if (worldId === null) {
+    console.error(`Invalid world ID: ${slug}`);
     notFound();
   }
 
-  const [worldResult, chunksResult] = await Promise.all([
-    caller.world.get({ worldId }),
-    caller.world.chunks({ worldId }),
-  ]);
+  const worldResult = await getCaller().world.get({ worldId });
 
   if (!worldResult.data) {
+    console.error(`World not found: ${worldId}`);
     notFound();
   }
 
   return (
-    <ChunkGrid
-      worldId={worldId}
-      world={worldResult.data}
-      initialChunks={[...chunksResult.data]}
-    />
+    <ChunkGrid worldId={worldId} world={worldResult.data} initialChunks={[]} />
   );
 }

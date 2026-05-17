@@ -2,15 +2,13 @@ import { tables } from "@logiccore/spacetimedb";
 import { z } from "zod";
 
 import { createTRPCRouter, baseProcedure } from "../../public";
-import { spacetimeDbQuery } from "../../utils";
+import { spacetimeDbMutation, spacetimeDbQuery } from "../../utils";
 
 export const router = createTRPCRouter({
-  list: baseProcedure.query(async ({ ctx }) => {
-    const data = await spacetimeDbQuery(
-      ctx.db,
-      (conn) => [...conn.db.world.iter()],
-      tables.world
-    );
+  list: baseProcedure.query(async () => {
+    const data = await spacetimeDbQuery(tables.world, (conn) => [
+      ...conn.db.world.iter(),
+    ]);
 
     return {
       success: true,
@@ -23,11 +21,10 @@ export const router = createTRPCRouter({
         worldId: z.coerce.bigint().positive(),
       })
     )
-    .query(async ({ ctx, input }) => {
+    .query(async ({ input }) => {
       const data = await spacetimeDbQuery(
-        ctx.db,
-        (conn) => conn.db.world.id.find(input.worldId) ?? null,
-        tables.world
+        tables.world.where((row) => row.id.eq(input.worldId)),
+        (conn) => conn.db.world.id.find(input.worldId) ?? null
       );
 
       return {
@@ -41,11 +38,10 @@ export const router = createTRPCRouter({
         worldId: z.coerce.bigint().positive(),
       })
     )
-    .query(async ({ ctx, input }) => {
+    .query(async ({ input }) => {
       const data = await spacetimeDbQuery(
-        ctx.db,
-        (conn) => conn.db.chunk.by_world.filter(input.worldId),
-        tables.chunk
+        tables.chunk.where((row) => row.worldId.eq(input.worldId)),
+        (conn) => conn.db.chunk.by_world.filter(input.worldId)
       );
 
       return {
@@ -59,11 +55,9 @@ export const router = createTRPCRouter({
         seed: z.number().nonnegative(),
       })
     )
-    .mutation(async ({ ctx, input }) => {
-      await spacetimeDbQuery(
-        ctx.db,
-        (conn) => conn.reducers.add({ seed: input.seed }),
-        tables.world
+    .mutation(async ({ input }) => {
+      await spacetimeDbMutation((conn) =>
+        conn.reducers.add({ seed: input.seed })
       );
       return {
         success: true,
@@ -75,11 +69,9 @@ export const router = createTRPCRouter({
         worldId: z.bigint().positive(),
       })
     )
-    .mutation(async ({ ctx, input }) => {
-      await spacetimeDbQuery(
-        ctx.db,
-        (conn) => conn.reducers.deleteWorld({ worldId: input.worldId }),
-        tables.world
+    .mutation(async ({ input }) => {
+      await spacetimeDbMutation((conn) =>
+        conn.reducers.deleteWorld({ worldId: input.worldId })
       );
       return {
         success: true,
