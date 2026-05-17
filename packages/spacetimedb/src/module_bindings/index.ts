@@ -40,12 +40,32 @@ import DeleteWorldReducer from "./delete_world_reducer";
 // Import all procedure arg schemas
 
 // Import all table schema definitions
+import ChunkRow from "./chunk_table";
 import WorldRow from "./world_table";
 
 /** Type-only namespace exports for generated type groups. */
 
 /** The schema information for all tables in this module. This is defined the same was as the tables would have been defined in the server. */
 const tablesSchema = __schema({
+  chunk: __table({
+    name: 'chunk',
+    indexes: [
+      { accessor: 'id', name: 'chunk_id_idx_btree', algorithm: 'btree', columns: [
+        'id',
+      ] },
+      { accessor: 'by_world_and_coords', name: 'chunk_world_id_chunk_x_chunk_y_idx_btree', algorithm: 'btree', columns: [
+        'worldId',
+        'chunkX',
+        'chunkY',
+      ] },
+      { accessor: 'by_world', name: 'chunk_world_id_idx_btree', algorithm: 'btree', columns: [
+        'worldId',
+      ] },
+    ],
+    constraints: [
+      { name: 'chunk_id_key', constraint: 'unique', columns: ['id'] },
+    ],
+  }, ChunkRow),
   world: __table({
     name: 'world',
     indexes: [

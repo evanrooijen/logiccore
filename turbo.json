@@ -12,10 +12,6 @@
     "//#fix": {},
     "//#check": {},
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".next/*"]
-    },
-    "@logiccore/web#build": {
       "dependsOn": ["@logiccore/spacetimedb#db:generate", "^build"],
       "outputs": [".next/*"]
     },
@@ -24,6 +20,7 @@
       "outputs": []
     },
     "dev": {
+      "dependsOn": ["@logiccore/spacetimedb#db:generate"],
       "persistent": true,
       "cache": false
     },

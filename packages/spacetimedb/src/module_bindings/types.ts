@@ -10,6 +10,54 @@ import {
   type Infer as __Infer,
 } from "spacetimedb";
 
+// The tagged union or sum type for the algebraic type `Biome`.
+export const Biome = __t.enum("Biome", {
+  Plains: __t.unit(),
+  Mountains: __t.unit(),
+  Desert: __t.unit(),
+  Volcanic: __t.unit(),
+  AncientSeabed: __t.unit(),
+});
+export type Biome = __Infer<typeof Biome>;
+
+export const Chunk = __t.object("Chunk", {
+  id: __t.u64(),
+  worldId: __t.u64(),
+  chunkX: __t.f64(),
+  chunkY: __t.f64(),
+  get biome() {
+    return Biome;
+  },
+  get geology() {
+    return RockType;
+  },
+  richness: __t.f64(),
+  get oreModifiers() {
+    return OreModifiers;
+  },
+  regionName: __t.string(),
+});
+export type Chunk = __Infer<typeof Chunk>;
+
+export const OreModifiers = __t.object("OreModifiers", {
+  gold: __t.f64(),
+  silver: __t.f64(),
+  copper: __t.f64(),
+  iron: __t.f64(),
+  coal: __t.f64(),
+});
+export type OreModifiers = __Infer<typeof OreModifiers>;
+
+// The tagged union or sum type for the algebraic type `RockType`.
+export const RockType = __t.enum("RockType", {
+  Granite: __t.unit(),
+  Basalt: __t.unit(),
+  Limestone: __t.unit(),
+  Shale: __t.unit(),
+  Quartzite: __t.unit(),
+});
+export type RockType = __Infer<typeof RockType>;
+
 export const World = __t.object("World", {
   id: __t.u64(),
   seed: __t.f64(),

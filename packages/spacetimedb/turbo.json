@@ -1,6 +1,8 @@
 {
   "extends": ["//"],
   "tasks": {
-    "db:generate": {}
+    "db:generate": {
+      "outputs": ["src/module_bindings/**"]
+    }
   }
 }

@@ -17,6 +17,42 @@ export const router = createTRPCRouter({
       data,
     } as const;
   }),
+  get: baseProcedure
+    .input(
+      z.object({
+        worldId: z.coerce.bigint().positive(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const data = await spacetimeDbQuery(
+        ctx.db,
+        (conn) => conn.db.world.id.find(input.worldId) ?? null,
+        tables.world
+      );
+
+      return {
+        success: true,
+        data,
+      } as const;
+    }),
+  chunks: baseProcedure
+    .input(
+      z.object({
+        worldId: z.coerce.bigint().positive(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const data = await spacetimeDbQuery(
+        ctx.db,
+        (conn) => conn.db.chunk.by_world.filter(input.worldId),
+        tables.chunk
+      );
+
+      return {
+        success: true,
+        data,
+      } as const;
+    }),
   add: baseProcedure
     .input(
       z.object({
