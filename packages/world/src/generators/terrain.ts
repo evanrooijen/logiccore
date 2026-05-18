@@ -1,5 +1,7 @@
 import type { NoiseFunction2D } from "simplex-noise";
 
+import type { Biome } from "../types";
+
 export interface TerrainNoises {
   continental: NoiseFunction2D;
   detail: NoiseFunction2D;
@@ -8,12 +10,59 @@ export interface TerrainNoises {
   tectonic: NoiseFunction2D;
 }
 
-export interface TerrainSample {
+interface TerrainSampleValues {
   elevation: number;
   erosion: number;
   heat: number;
   moisture: number;
   tectonic: number;
+}
+
+export class TerrainSample {
+  readonly elevation: number;
+
+  readonly erosion: number;
+
+  readonly heat: number;
+
+  readonly moisture: number;
+
+  readonly tectonic: number;
+
+  constructor({
+    elevation,
+    erosion,
+    heat,
+    moisture,
+    tectonic,
+  }: TerrainSampleValues) {
+    this.elevation = elevation;
+    this.erosion = erosion;
+    this.heat = heat;
+    this.moisture = moisture;
+    this.tectonic = tectonic;
+  }
+
+  getBiome(): Biome {
+    switch (true) {
+      case this.tectonic > 0.83 && this.elevation > 0.54 && this.heat > 0.45: {
+        return "volcanic";
+      }
+      case this.elevation > 0.68 ||
+        (this.tectonic > 0.74 && this.elevation > 0.56): {
+        return "mountains";
+      }
+      case this.moisture < 0.24 && this.heat > 0.42: {
+        return "desert";
+      }
+      case this.elevation < 0.34 && this.erosion > 0.48: {
+        return "ancient_seabed";
+      }
+      default: {
+        return "plains";
+      }
+    }
+  }
 }
 
 interface TerrainPoint {
@@ -105,11 +154,11 @@ export const sampleTerrain = (
       rainShadow
   );
 
-  return {
+  return new TerrainSample({
     elevation,
     erosion,
     heat,
     moisture,
     tectonic,
-  };
+  });
 };

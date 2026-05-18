@@ -2,7 +2,6 @@ import { createNoise2D } from "simplex-noise";
 
 import {
   createRegionName,
-  getBiome,
   getGeo,
   getRichness,
   sampleTerrain,
@@ -59,7 +58,7 @@ export const generateWorld = (
         size,
         chunkSize
       );
-      const biome = getBiome(terrain);
+      const biome = terrain.getBiome();
 
       /* =====================================================
          GEOLOGY
