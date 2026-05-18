@@ -119,16 +119,22 @@ export const generateWorld = (
       }
 
       // biome specialization
-      if (biome === "mountains") {
-        oreModifiers.gold += 0.3;
-      }
-
-      if (biome === "volcanic") {
-        oreModifiers.copper += 0.3;
-      }
-
-      if (biome === "ancient_seabed") {
-        oreModifiers.coal += 0.2;
+      switch (biome) {
+        case "mountains": {
+          oreModifiers.gold += 0.3;
+          break;
+        }
+        case "volcanic": {
+          oreModifiers.copper += 0.3;
+          break;
+        }
+        case "ancient_seabed": {
+          oreModifiers.coal += 0.2;
+          break;
+        }
+        default: {
+          break;
+        }
       }
 
       if (terrain.tectonic > 0.72) {
@@ -146,13 +152,19 @@ export const generateWorld = (
 
       const anomaly = oreNoise(worldX * 0.0009, worldY * 0.0009);
 
-      if (anomaly > 0.82) {
-        oreModifiers.gold += 1.5;
-        richness *= 1.8;
-      }
-
-      if (anomaly < -0.8) {
-        oreModifiers.silver += 1.2;
+      switch (true) {
+        case anomaly > 0.82: {
+          oreModifiers.gold += 1.5;
+          richness *= 1.8;
+          break;
+        }
+        case anomaly < -0.8: {
+          oreModifiers.silver += 1.2;
+          break;
+        }
+        default: {
+          break;
+        }
       }
 
       richness = Math.min(richness, 1);
