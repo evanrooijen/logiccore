@@ -1,6 +1,6 @@
 import type { NoiseFunction2D } from "simplex-noise";
 
-import type { Biome } from "../types";
+import type { Biome, OreType, RockType } from "../types";
 
 export interface TerrainNoises {
   continental: NoiseFunction2D;
@@ -17,6 +17,31 @@ interface TerrainSampleValues {
   moisture: number;
   tectonic: number;
 }
+
+interface TerrainRichnessOptions {
+  anomaly: number;
+  geology: RockType;
+  noise: NoiseFunction2D;
+  worldX: number;
+  worldY: number;
+}
+
+interface TerrainOreModifierOptions {
+  anomaly: number;
+  geology: RockType;
+}
+
+const clamp01 = (value: number): number => Math.min(Math.max(value, 0), 1);
+
+const normalizeNoise = (value: number): number => (value + 1) / 2;
+
+const GEOLOGY_POTENTIAL = {
+  basalt: 0.82,
+  granite: 0.74,
+  limestone: 0.42,
+  quartzite: 0.62,
+  shale: 0.48,
+} as const satisfies Record<RockType, number>;
 
 export class TerrainSample {
   readonly elevation: number;
@@ -63,16 +88,138 @@ export class TerrainSample {
       }
     }
   }
+
+  getRichness({
+    anomaly,
+    geology,
+    noise,
+    worldX,
+    worldY,
+  }: TerrainRichnessOptions): number {
+    const depositNoise = normalizeNoise(noise(worldX * 0.003, worldY * 0.003));
+    const faultContact = this.tectonic * (1 - Math.abs(this.elevation - 0.58));
+    const exposedStrata = this.erosion * 0.45 + this.elevation * 0.28;
+    const geologyPotential = GEOLOGY_POTENTIAL[geology];
+
+    let richness =
+      depositNoise * 0.34 +
+      faultContact * 0.28 +
+      exposedStrata * 0.18 +
+      geologyPotential * 0.2;
+
+    // Exaggerate rarity while keeping ore-bearing areas tied to terrain context.
+    richness **= 2.2;
+
+    switch (true) {
+      case anomaly > 0.82: {
+        richness *= 1.8;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+
+    return clamp01(richness);
+  }
+
+  getOreModifiers({
+    anomaly,
+    geology,
+  }: TerrainOreModifierOptions): Record<OreType, number> {
+    const biome = this.getBiome();
+    const oreModifiers: Record<OreType, number> = {
+      coal: 1,
+      copper: 1,
+      gold: 1,
+      iron: 1,
+      silver: 1,
+    };
+
+    switch (geology) {
+      case "granite": {
+        oreModifiers.gold += 0.5;
+        break;
+      }
+      case "quartzite": {
+        oreModifiers.silver += 0.4;
+        break;
+      }
+      case "basalt": {
+        oreModifiers.copper += 0.6;
+        oreModifiers.iron += 0.3;
+        break;
+      }
+      case "shale": {
+        oreModifiers.coal += 0.7;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+
+    switch (biome) {
+      case "mountains": {
+        oreModifiers.gold += 0.3;
+        break;
+      }
+      case "volcanic": {
+        oreModifiers.copper += 0.3;
+        break;
+      }
+      case "ancient_seabed": {
+        oreModifiers.coal += 0.2;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+
+    switch (true) {
+      case this.tectonic > 0.72: {
+        oreModifiers.iron += 0.2;
+        oreModifiers.copper += 0.15;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+
+    switch (true) {
+      case this.erosion > 0.68: {
+        oreModifiers.silver += 0.15;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+
+    switch (true) {
+      case anomaly > 0.82: {
+        oreModifiers.gold += 1.5;
+        break;
+      }
+      case anomaly < -0.8: {
+        oreModifiers.silver += 1.2;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+
+    return oreModifiers;
+  }
 }
 
 interface TerrainPoint {
   x: number;
   y: number;
 }
-
-const clamp01 = (value: number): number => Math.min(Math.max(value, 0), 1);
-
-const normalizeNoise = (value: number): number => (value + 1) / 2;
 
 const sampleContinentalShelf = ({ x, y }: TerrainPoint): number => {
   const centerDistance = Math.hypot(x - 0.5, y - 0.5) / Math.SQRT1_2;

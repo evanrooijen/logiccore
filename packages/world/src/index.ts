@@ -1,13 +1,8 @@
 import { createNoise2D } from "simplex-noise";
 
-import {
-  createRegionName,
-  getGeo,
-  getRichness,
-  sampleTerrain,
-} from "./generators";
+import { createRegionName, getGeo, sampleTerrain } from "./generators";
 import type { TerrainNoises } from "./generators";
-import type { ChunkData, OreType, WorldData } from "./types";
+import type { ChunkData, WorldData } from "./types";
 import { mulberry32 } from "./utils";
 
 export const generateWorld = (
@@ -67,106 +62,28 @@ export const generateWorld = (
       const geology = getGeo(terrain);
 
       /* =====================================================
-         BASE RICHNESS
-      ===================================================== */
-
-      let richness = getRichness(
-        richnessNoise,
-        worldX,
-        worldY,
-        terrain,
-        geology
-      );
-
-      /* =====================================================
-         ORE MODIFIERS
-      ===================================================== */
-
-      const oreModifiers: Record<OreType, number> = {
-        gold: 1,
-        silver: 1,
-        copper: 1,
-        iron: 1,
-        coal: 1,
-      };
-
-      // geological specialization
-      switch (geology) {
-        case "granite": {
-          oreModifiers.gold += 0.5;
-          break;
-        }
-
-        case "quartzite": {
-          oreModifiers.silver += 0.4;
-          break;
-        }
-
-        case "basalt": {
-          oreModifiers.copper += 0.6;
-          oreModifiers.iron += 0.3;
-          break;
-        }
-
-        case "shale": {
-          oreModifiers.coal += 0.7;
-          break;
-        }
-        default: {
-          break;
-        }
-      }
-
-      // biome specialization
-      switch (biome) {
-        case "mountains": {
-          oreModifiers.gold += 0.3;
-          break;
-        }
-        case "volcanic": {
-          oreModifiers.copper += 0.3;
-          break;
-        }
-        case "ancient_seabed": {
-          oreModifiers.coal += 0.2;
-          break;
-        }
-        default: {
-          break;
-        }
-      }
-
-      if (terrain.tectonic > 0.72) {
-        oreModifiers.iron += 0.2;
-        oreModifiers.copper += 0.15;
-      }
-
-      if (terrain.erosion > 0.68) {
-        oreModifiers.silver += 0.15;
-      }
-
-      /* =====================================================
          RARE ANOMALIES
       ===================================================== */
 
       const anomaly = oreNoise(worldX * 0.0009, worldY * 0.0009);
 
-      switch (true) {
-        case anomaly > 0.82: {
-          oreModifiers.gold += 1.5;
-          richness *= 1.8;
-          break;
-        }
-        case anomaly < -0.8: {
-          oreModifiers.silver += 1.2;
-          break;
-        }
-        default: {
-          break;
-        }
-      }
+      /* =====================================================
+         BASE RICHNESS
+      ===================================================== */
 
-      richness = Math.min(richness, 1);
+      const richness = terrain.getRichness({
+        anomaly,
+        geology,
+        noise: richnessNoise,
+        worldX,
+        worldY,
+      });
+
+      /* =====================================================
+         ORE MODIFIERS
+      ===================================================== */
+
+      const oreModifiers = terrain.getOreModifiers({ anomaly, geology });
 
       /* =====================================================
          REGION NAMING
