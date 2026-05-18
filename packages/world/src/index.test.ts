@@ -75,6 +75,16 @@ describe("generateWorld", () => {
 
       expect(hasDifference).toBe(true);
     });
+
+    it("should blend multiple terrain factors into varied regions", () => {
+      const world = generateWorld(13_579, 512, 32);
+
+      const biomes = new Set(world.chunks.map((chunk) => chunk.biome));
+      const geologies = new Set(world.chunks.map((chunk) => chunk.geology));
+
+      expect(biomes.size).toBeGreaterThan(2);
+      expect(geologies.size).toBeGreaterThan(2);
+    });
   });
 
   describe("chunk data", () => {
