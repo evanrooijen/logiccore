@@ -1,26 +1,22 @@
-import type { NoiseFunction2D } from "simplex-noise";
-
 import type { RockType } from "../types";
+import type { TerrainSample } from "./terrain";
 
-export const getGeo = (
-  noise: NoiseFunction2D,
-  worldX: number,
-  worldY: number
-): RockType => {
-  const geologyValue = noise(worldX * 0.002, worldY * 0.002);
-
-  let geology: RockType;
-
-  if (geologyValue < -0.5) {
-    geology = "shale";
-  } else if (geologyValue < -0.1) {
-    geology = "limestone";
-  } else if (geologyValue < 0.2) {
-    geology = "granite";
-  } else if (geologyValue < 0.55) {
-    geology = "quartzite";
-  } else {
-    geology = "basalt";
+export const getGeo = (terrain: TerrainSample): RockType => {
+  if (terrain.tectonic > 0.76 && terrain.heat > 0.48) {
+    return "basalt";
   }
-  return geology;
+
+  if (terrain.elevation > 0.66 && terrain.erosion < 0.58) {
+    return "granite";
+  }
+
+  if (terrain.elevation < 0.38 && terrain.moisture > 0.46) {
+    return "limestone";
+  }
+
+  if (terrain.erosion > 0.62 || terrain.elevation < 0.3) {
+    return "shale";
+  }
+
+  return "quartzite";
 };

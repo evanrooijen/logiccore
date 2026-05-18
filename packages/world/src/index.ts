@@ -1,6 +1,13 @@
 import { createNoise2D } from "simplex-noise";
 
-import { createRegionName, getBiome, getGeo, getRichness } from "./generators";
+import {
+  createRegionName,
+  getBiome,
+  getGeo,
+  getRichness,
+  sampleTerrain,
+} from "./generators";
+import type { TerrainNoises } from "./generators";
 import type { ChunkData, OreType, WorldData } from "./types";
 import { mulberry32 } from "./utils";
 
@@ -16,8 +23,13 @@ export const generateWorld = (
 
   const rng = mulberry32(seed);
 
-  const biomeNoise = createNoise2D(rng);
-  const geologyNoise = createNoise2D(rng);
+  const terrainNoises: TerrainNoises = {
+    continental: createNoise2D(rng),
+    detail: createNoise2D(rng),
+    erosion: createNoise2D(rng),
+    moisture: createNoise2D(rng),
+    tectonic: createNoise2D(rng),
+  };
   const richnessNoise = createNoise2D(rng);
   const oreNoise = createNoise2D(rng);
 
@@ -40,19 +52,32 @@ export const generateWorld = (
          BIOME
       ===================================================== */
 
-      const biome = getBiome(biomeNoise, worldX, worldY);
+      const terrain = sampleTerrain(
+        terrainNoises,
+        worldX,
+        worldY,
+        size,
+        chunkSize
+      );
+      const biome = getBiome(terrain);
 
       /* =====================================================
          GEOLOGY
       ===================================================== */
 
-      const geology = getGeo(geologyNoise, worldX, worldY);
+      const geology = getGeo(terrain);
 
       /* =====================================================
          BASE RICHNESS
       ===================================================== */
 
-      let richness = getRichness(richnessNoise, worldX, worldY);
+      let richness = getRichness(
+        richnessNoise,
+        worldX,
+        worldY,
+        terrain,
+        geology
+      );
 
       /* =====================================================
          ORE MODIFIERS
@@ -100,6 +125,19 @@ export const generateWorld = (
 
       if (biome === "volcanic") {
         oreModifiers.copper += 0.3;
+      }
+
+      if (biome === "ancient_seabed") {
+        oreModifiers.coal += 0.2;
+      }
+
+      if (terrain.tectonic > 0.72) {
+        oreModifiers.iron += 0.2;
+        oreModifiers.copper += 0.15;
+      }
+
+      if (terrain.erosion > 0.68) {
+        oreModifiers.silver += 0.15;
       }
 
       /* =====================================================

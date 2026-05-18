@@ -1,27 +1,29 @@
-import type { NoiseFunction2D } from "simplex-noise";
-
 import type { Biome } from "../types";
+import type { TerrainSample } from "./terrain";
 
-export const getBiome = (
-  noise: NoiseFunction2D,
-  worldX: number,
-  worldY: number
-): Biome => {
-  const biomeValue = noise(worldX * 0.0008, worldY * 0.0008);
-
-  let biome: Biome;
-
-  if (biomeValue < -0.45) {
-    biome = "desert";
-  } else if (biomeValue < -0.1) {
-    biome = "plains";
-  } else if (biomeValue < 0.3) {
-    biome = "ancient_seabed";
-  } else if (biomeValue < 0.65) {
-    biome = "mountains";
-  } else {
-    biome = "volcanic";
+export const getBiome = (terrain: TerrainSample): Biome => {
+  if (
+    terrain.tectonic > 0.83 &&
+    terrain.elevation > 0.54 &&
+    terrain.heat > 0.45
+  ) {
+    return "volcanic";
   }
 
-  return biome;
+  if (
+    terrain.elevation > 0.68 ||
+    (terrain.tectonic > 0.74 && terrain.elevation > 0.56)
+  ) {
+    return "mountains";
+  }
+
+  if (terrain.moisture < 0.24 && terrain.heat > 0.42) {
+    return "desert";
+  }
+
+  if (terrain.elevation < 0.34 && terrain.erosion > 0.48) {
+    return "ancient_seabed";
+  }
+
+  return "plains";
 };
